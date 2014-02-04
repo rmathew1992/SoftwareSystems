@@ -63,7 +63,7 @@ class Controller:
         """
         self.i += e
 
-        return self.kp*e + self.ki*self.i + self.di
+        return self.kp*e + self.ki*self.i + self.di * e/.2
 
 # ============================================================
 
@@ -77,9 +77,10 @@ def closed_loop( c, p, tm=5000 ):
     returns: tuple of sequences (times, targets, errors)
     """
     def setpoint( t ):
-        if t < 100: return 0
-        if t < 300: return 50
-        return 10
+        # if t < 100: return 0
+        # if t < 300: return 50
+        # return 10
+        return t*.5
     
     y = 0
     res = []
@@ -96,7 +97,7 @@ def closed_loop( c, p, tm=5000 ):
 
 # ============================================================
 
-c = Controller( 1.25, 0, 0)
+c = Controller( 1, 0.005, 0)
 p = Buffer( 50, 10 )
 
 # run the simulation
