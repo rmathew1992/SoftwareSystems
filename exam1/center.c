@@ -19,7 +19,26 @@ License: Creative Commons Attribution-ShareAlike 3.0
 char *center(char *s, int n, char fillchar)
 {
     // FILL THIS IN
-    //    return NULL;
+    char* x = (char*) malloc(sizeof(int) * n);
+    int i;
+    int length = strlen(s); 
+    int start = (n - length)/2;
+    int j = 0;
+
+    for(i = 0; i<n; i++){
+        if (i<start){
+            x[i] = fillchar;
+        }
+        else{
+            if(j<length){
+                x[i] =s[j];
+                j = j+ 1;    
+            } else {
+                x[i] = fillchar;
+            }
+        }
+    }
+    return x;
 }
 
 
