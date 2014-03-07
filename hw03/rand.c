@@ -67,7 +67,7 @@ float my_random_float2()
   while (1) {
     x = random();
     if (x == 0) {
-      exp -= 31;
+      exp -= 31; 
     } else {
       break;
     }
@@ -75,7 +75,7 @@ float my_random_float2()
 
   // find the location of the first set bit and compute the exponent
   while (x & mask) {
-    mask <<= 1;
+    mask <<= 1; //Bitwise left shift; 
     exp--;
   }
 
@@ -90,6 +90,35 @@ float my_random_float2()
 double my_random_double()
 {
   // TODO: fill this in
+  int x;
+  int mant; 
+  int exp = 126;
+  int mask = 1;
+
+  union{
+    double d;
+    int i;
+  } b;
+  while(1){
+    x =random();
+    if(x == 0){
+      exp -=31;
+    } else {
+      break;
+    }
+  }
+  // find the location of the first set bit and compute the exponent
+  while (x & mask) {
+    mask <<= 1; //Bitwise left shift; 
+    exp--;
+  }
+
+  // use the remaining bit as the mantissa
+  mant = x >> 11;
+  b.i = (exp << 52) | mant;
+  printf("%f\n",b.d);
+  return b.d;
+
 }
 
 // return a constant (this is a dummy function for time trials)

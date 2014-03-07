@@ -51,6 +51,14 @@ main (int argc, char *argv[])
   srandom (seed);
   t0 = get_seconds();
   for (i=0; i<iters; i++) {
+    f = my_random_double();
+  }
+  t1 = get_seconds();
+  printf ("my_random_double \t %f ms\n", t1 - t0);
+
+  srandom (seed);
+  t0 = get_seconds();
+  for (i=0; i<iters; i++) {
     f = dummy();
   }
   t1 = get_seconds();
@@ -91,7 +99,7 @@ main (int argc, char *argv[])
   }
   t1 = get_seconds();
   printf ("mine \t %f ms\n", t1 - t0);
-   
+  //This implementation is faster-porque?   
 
   srandom (seed);
   t0 = get_seconds();
@@ -118,4 +126,5 @@ main (int argc, char *argv[])
   }
   t1 = get_seconds();
   printf ("theirs \t %f ms\n", t1 - t0);    
+
 }
