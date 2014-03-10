@@ -13,12 +13,18 @@ typedef struct {
 // If unable to allocate, prints an error message and exits.
 Rational *make_rational(int numer, int denom) {
     // FILL THIS IN
-    return NULL;
+            Rational *number;
+            number = (Rational *)malloc(sizeof(Rational *));
+            number.numer = numer;
+            number.denom = denom;
+
+    return number;
 }
 
 // Computes a floating-point approximation of a Rational.
 double rational_to_double(Rational *rational) {
     // FILL THIS IN
+    
     return 0.0;
 }
 
