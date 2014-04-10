@@ -17,7 +17,7 @@ typedef struct {
 Vector *make_vector(int len) {
     Vector *vector = malloc(sizeof(Vector));
 
-    vector->data = calloc(len * sizeof(double *));
+    vector->data = calloc(len *, sizeof(double *));
     vector->len = len;
     return vector;
 }
@@ -72,7 +72,7 @@ double *add_vector_func(Vector *A, Vector *B) {
     add_vector(A, B, C);
 }
 
-int main {
+int main() {
     Vector *A = make_vector(4);
     consecutive_vector(A);
     printf("A\n");
@@ -83,7 +83,7 @@ int main {
     printf("B\n");
     print_vector(B);
 
-    Vector *C = add_vector_func(A, B);
+    Vector *C = (Vector *) add_vector_func(A, B);
     printf("A + B\n");
     print_vector(C);
 
@@ -91,5 +91,5 @@ int main {
     free_vector(B);
     free_vector(C);
 
-    return 0
+    return 0;
 }

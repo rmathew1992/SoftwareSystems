@@ -170,6 +170,89 @@ double *row_sum(Matrix *A) {
 */
 
 
+
+int *comp_rows(Matrix *Original, int value){
+    double *row_array = row_sum(Original);
+    int *result = malloc(sizeof(int)); 
+    printf("comp_rows starts here ");
+    result[0] = 1;
+    value = row_array[0];
+    int c;
+    for (c=0; c<Original->rows; c++) {
+        if (value == row_array[c]){
+            // printf("Match! %d\n", value);
+
+            result[1] = value;
+        } else {
+            result = (int *)row_array;
+            // printf("Nope%f\n",row_array[c]);
+        }
+    }
+    
+    return result;
+}
+Matrix *transpose(Matrix *Original){
+    int i, j;
+    Matrix *result= make_matrix(Original->cols, Original->rows);
+
+    for (i=0; i<Original->rows; i++) {
+    for (j=0; j<Original->cols; j++) {
+        result->data[j][i] = Original->data[i][j]; 
+    }
+    }
+    // print_matrix(result);
+    return result;
+}
+
+Matrix *forward_diagonal(Matrix *Original){
+    int i; 
+    Matrix *result = make_matrix(Original->rows, 1);
+    
+    for (i=0; i<Original->rows; i++) {
+        result->data[i][0] = Original->data[i][i];
+    }
+
+    // print_matrix(result);
+    return result;
+
+}
+
+Matrix *backward_diagonal(Matrix *Original){
+    int i, j;
+    Matrix *result = make_matrix(Original->rows, 1);
+    i = 0;
+    j = Original->cols - 1;
+    while (i<Original->rows){
+        result->data[i][0] = Original->data[i][j];
+        i = i + 1;
+        j = j -1;
+    }
+
+    // print_matrix(result);
+    return result;
+
+}
+
+int is_magic_square(Matrix *original){
+    if(original->rows != original->cols){return 0;} 
+    int *result = comp_rows(original,0);
+    if(result[0] == 0){return 0;}
+    
+    Matrix *cols =  transpose(original);
+    result = comp_rows(cols, result[0]);
+    if(result[0] == 0){return 0;}
+
+    Matrix *forward_d =  forward_diagonal(original);
+    result = comp_rows(forward_d, result[0]);
+    if(result[0] == 0){return 0;}
+
+    Matrix *backward_d =  backward_diagonal(original);
+    result = comp_rows(backward_d, result[0]);
+    if(result[0] == 0){return 0;}
+
+    return 1;    
+}
+
 int main() {
     int i;
 
@@ -202,6 +285,23 @@ int main() {
 	printf("row %d\t%lf\n", i, sums[i]);
     }
     // should print 6, 22, 38
+    // comp_rows(A,0);
+
+    // printf("transposed the following matrix\n");
+    // print_matrix(A);
+    // transpose(A);
+
+    // printf("diagonal of the following matrix\n");
+    // print_matrix(A);
+    // forward_diagonal(A);
+
+    // printf("diagonal of the following matrix\n");
+    // print_matrix(A);
+    // backward_diagonal(A);
+    int test = is_magic_square(A);
+    printf("%d\n", test);
 
     return 0;
+
+
 }
