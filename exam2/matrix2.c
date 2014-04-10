@@ -169,28 +169,32 @@ double *row_sum(Matrix *A) {
    Feel free to use row_sum().
 */
 
+/******      HELPER FUNCTIONS      ********/
 
-
+/*Takes in the original matrix, and a value, 
+   compares the sum of each row returns an array with two values. The first is
+   0 if the value is different than the sum, otherwise 1; the second element
+   contains the value*/
 int *comp_rows(Matrix *Original, int value){
+    int c;
     double *row_array = row_sum(Original);
     int *result = malloc(sizeof(int)); 
-    printf("comp_rows starts here ");
+    
     result[0] = 1;
     value = row_array[0];
-    int c;
+    
     for (c=0; c<Original->rows; c++) {
         if (value == row_array[c]){
-            // printf("Match! %d\n", value);
-
             result[1] = value;
         } else {
             result = (int *)row_array;
-            // printf("Nope%f\n",row_array[c]);
         }
     }
     
     return result;
 }
+/* Takes in a matrix and transposes it so that the rows become columns 
+and vice versa, returns the resultant matrix*/
 Matrix *transpose(Matrix *Original){
     int i, j;
     Matrix *result= make_matrix(Original->cols, Original->rows);
@@ -200,10 +204,10 @@ Matrix *transpose(Matrix *Original){
         result->data[j][i] = Original->data[i][j]; 
     }
     }
-    // print_matrix(result);
+
     return result;
 }
-
+/*Takes in a matrix, returns a matrix with the only forward diagonal as row*/
 Matrix *forward_diagonal(Matrix *Original){
     int i; 
     Matrix *result = make_matrix(Original->rows, 1);
@@ -212,14 +216,16 @@ Matrix *forward_diagonal(Matrix *Original){
         result->data[i][0] = Original->data[i][i];
     }
 
-    // print_matrix(result);
     return result;
-
 }
 
+/* ******** EXAM SOLUTION ******* */
+
+/*Takes in a matrix, returns a matrix with the only backward diagonal as row*/
 Matrix *backward_diagonal(Matrix *Original){
     int i, j;
     Matrix *result = make_matrix(Original->rows, 1);
+    
     i = 0;
     j = Original->cols - 1;
     while (i<Original->rows){
@@ -228,24 +234,33 @@ Matrix *backward_diagonal(Matrix *Original){
         j = j -1;
     }
 
-    // print_matrix(result);
     return result;
 
 }
 
+
+/*Takes in a matrix and returns a 1 if it's a magic square, otherwise a 1*/
 int is_magic_square(Matrix *original){
+    
+    //Check if the matrix is square if it's not return
     if(original->rows != original->cols){return 0;} 
-    int *result = comp_rows(original,0);
+    double *initial = row_sum(original);
+    
+    //Check that all rows has the same value
+    int *result = comp_rows(original,initial[0]);
     if(result[0] == 0){return 0;}
     
+    //Check that all the columns has the same value
     Matrix *cols =  transpose(original);
     result = comp_rows(cols, result[0]);
     if(result[0] == 0){return 0;}
 
+    //Check that the forward_diagonal has the same value
     Matrix *forward_d =  forward_diagonal(original);
     result = comp_rows(forward_d, result[0]);
     if(result[0] == 0){return 0;}
 
+    //Check that the backward_diagonal has the same value
     Matrix *backward_d =  backward_diagonal(original);
     result = comp_rows(backward_d, result[0]);
     if(result[0] == 0){return 0;}
@@ -265,14 +280,14 @@ int main() {
     printf("A + A\n");
     print_matrix(C);
 
-    Matrix *B = make_matrix(4, 3);
+    Matrix *B = make_matrix(3, 3);
     increment_matrix(B, 1);
     printf("B\n");
     print_matrix(B);
 
-    Matrix *D = mult_matrix_func(A, B);
-    printf("D\n");
-    print_matrix(D);
+    // Matrix *D = mult_matrix_func(A, B);
+    // printf("D\n");
+    // print_matrix(D);
 
     double sum = matrix_sum1(A);
     printf("sum = %lf\n", sum);
@@ -284,22 +299,12 @@ int main() {
     for (i=0; i<A->rows; i++) {
 	printf("row %d\t%lf\n", i, sums[i]);
     }
-    // should print 6, 22, 38
-    // comp_rows(A,0);
 
-    // printf("transposed the following matrix\n");
-    // print_matrix(A);
-    // transpose(A);
-
-    // printf("diagonal of the following matrix\n");
-    // print_matrix(A);
-    // forward_diagonal(A);
-
-    // printf("diagonal of the following matrix\n");
-    // print_matrix(A);
-    // backward_diagonal(A);
-    int test = is_magic_square(A);
-    printf("%d\n", test);
+    int not_magic = is_magic_square(A);
+    printf("This should not be a magic square %d\n", not_magic);
+   
+    int magic = is_magic_square(B);
+    printf("This should be a magic square %d\n", magic);
 
     return 0;
 
