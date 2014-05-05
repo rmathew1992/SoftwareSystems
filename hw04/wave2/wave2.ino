@@ -19,29 +19,44 @@ int buttonPin2 = 3;
 
 void setup() {
   Serial.begin(9600);
-  
-  pinMode(buttonPin1, INPUT_PULLUP);  
-  pinMode(buttonPin2, INPUT_PULLUP);  
 
-  pinMode(ledPin, OUTPUT);
+  DDRD = B11100000;
+  DDRB = B00111111; 
+//  pinMode(buttonPin1, INPUT_PULLUP);  
+//  pinMode(buttonPin2, INPUT_PULLUP);  
+
+//  pinMode(ledPin, OUTPUT);
   
-  pinMode(13, OUTPUT);  
-  pinMode(12, OUTPUT);  
-  pinMode(11, OUTPUT);  
-  pinMode(10, OUTPUT);  
-  pinMode(9, OUTPUT);  
-  pinMode(8, OUTPUT);  
-  pinMode(7, OUTPUT);  
-  pinMode(6, OUTPUT);  
+//  pinMode(13, OUTPUT);  
+//  pinMode(12, OUTPUT);  
+//  pinMode(11, OUTPUT);  
+//  pinMode(10, OUTPUT);  
+//  pinMode(9, OUTPUT);  
+//  pinMode(8, OUTPUT);  
+//  pinMode(7, OUTPUT);  
+//  pinMode(6, OUTPUT);  
 }
 
 void writeByte(int x) {
   int pin;
   
   for (pin=13; pin>=6; pin--) {
-    digitalWrite(pin, x&1);
+    int portB
+    if (pin > 7) {
+      a = (pin-8);
+      portB = (x&1)>>a;
+      PORTB |= portB;
+    }
+    else {
+      b = pin;
+      portB = (x&1)>>b;
+      PORTD |= portB;
+    }
     x >>= 1;
   }
+
+  PORTB ^= B00111111;
+  PORTD ^= B11111110;
 }
 
 int low = 36;

@@ -29,7 +29,7 @@ int catch_signal(int sig, void (*handler) (int)) {
 }
 
 void end_game(int sig)
-{
+{   
     printf("\nFinal score: %i\n", score);
     exit(EXIT_SUCCESS);
 }
